@@ -1,0 +1,25 @@
+<launch>	
+	        <!--  ************** Move Base ***************  -->
+	<node name="map_server" pkg="map_server" type="map_server" args="$(find agv_DLM)/maps/map1.yaml"/>
+	
+	
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+  	  	<rosparam file="$(find agv_DLM)/cfg/costmap_common_params.yaml" command="load" ns="global_costmap" />
+  	 	<rosparam file="$(find agv_DLM)/cfg/costmap_common_params.yaml" command="load" ns="local_costmap" />
+  		<rosparam file="$(find agv_DLM)/cfg/local_costmap_params.yaml" command="load" />
+  		<rosparam file="$(find agv_DLM)/cfg/global_costmap_params.yaml" command="load" />
+  		<rosparam file="$(find agv_DLM)/cfg/dwa_local_planner_params.yaml" command="load" />
+
+		<param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+		<rosparam file="$(find agv_DLM)/cfg/move_base.yaml"  command="load" />
+
+
+      		<param name="clearing_rotation_allowed" value="true" /> <!-- Nox is able to rotate in place -->
+	</node>
+	
+	<node name="amcl"  pkg="amcl"  type="amcl" output="screen"  respawn="true">
+			<remap from="scan" to="/scan"/>
+			<remap from="map"  to="/map" />
+			<remap from="initialpose"  to="initialpose" />	
+        </node>
+</launch>

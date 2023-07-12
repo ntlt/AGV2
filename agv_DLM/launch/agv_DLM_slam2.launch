@@ -1,0 +1,3 @@
+<launch>
+	<include file="$(find agv_DLM)/launch/agv_DLM_navigation.launch" />
+</launch>
